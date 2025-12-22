@@ -1,0 +1,32 @@
+{
+  "timestamp": "2025-12-12T16:40:02",
+  "command": "python some_broken_script.py",
+  "steps": [
+    {
+      "type": "bash",
+      "command": "python some_broken_script.py",
+      "exit_code": 1,
+      "output_excerpt": "Traceback (most recent call last):\n  File \"some_broken_script.py\", line 8, in <module>\n    content = read_file()\n              ~~~~~~~~~^^\n  File \"some_broken_script.py\", line 5, in read_file\n    with open(\"/nonexistent/file.txt\", \"r\") as f:\n         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/nonexistent/file.txt'"
+    },
+    {
+      "type": "minecontext_context",
+      "result": {
+        "status": "error",
+        "source": "MineContext",
+        "timestamp": "2025-12-12T16:40:03.073078",
+        "error": {
+          "type": "MineContextUnavailable",
+          "message": "无法连接 MineContext 本地服务: HTTPConnectionPool(host='127.0.0.1', port=1733): Max retries exceeded with url: /contexts?limit=1&page=1 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000025ACBEE1D80>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))",
+          "hint": "请确认 MineContext 已启动，并监听在 http://localhost:1733。"
+        },
+        "user_intent_summary": null,
+        "recent_activity": null,
+        "tips_summary": null
+      }
+    },
+    {
+      "type": "llm_analysis",
+      "result": "【错误】无法连接到 SiliconFlow API，请检查网络连接。"
+    }
+  ]
+}

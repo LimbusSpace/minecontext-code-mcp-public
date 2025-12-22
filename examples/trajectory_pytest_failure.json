@@ -1,0 +1,32 @@
+{
+  "timestamp": "2025-12-13T16:12:51",
+  "command": "pytest tests/test_xxx.py",
+  "steps": [
+    {
+      "type": "bash",
+      "command": "pytest tests/test_xxx.py",
+      "exit_code": 1,
+      "output_excerpt": "'pytest' 不是内部或外部命令，也不是可运行的程序\n或批处理文件。\n"
+    },
+    {
+      "type": "minecontext_context",
+      "result": {
+        "status": "error",
+        "source": "MineContext",
+        "timestamp": "2025-12-13T08:12:53.316663",
+        "error": {
+          "type": "MineContextUnavailable",
+          "message": "无法连接 MineContext 本地服务: HTTPConnectionPool(host='127.0.0.1', port=1733): Max retries exceeded with url: /contexts?limit=1&page=1 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001EE65A76F90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))",
+          "hint": "请确认 MineContext 已启动，并监听在 http://localhost:1733。"
+        },
+        "user_intent_summary": null,
+        "recent_activity": null,
+        "tips_summary": null
+      }
+    },
+    {
+      "type": "llm_analysis",
+      "result": "【占位】这里本来应该是 LLM 的分析结果。"
+    }
+  ]
+}

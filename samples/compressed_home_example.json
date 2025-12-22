@@ -1,0 +1,74 @@
+{
+  "status": "ok",
+  "timestamp": "2025-12-08T17:21:30.909544",
+  "user_intent_summary": {
+    "natural_language": "当前最高优先级任务包括：抓取 MineContext 项目的 JSON 样本数据，用于后续开发使用；完成 MineContext 和 Trae 的 demo 搭建，确保能运行最小 demo 示例；打开 dev_log.md 记录当日工作计划，包括今日需完成的MineContext和Trae任务及预期结果",
+    "top_todos": [
+      {
+        "id": 2,
+        "content": "抓取 MineContext 项目的 JSON 样本数据，用于后续开发使用",
+        "end_time": "2025-12-08 17:00:00",
+        "urgency": 2,
+        "status": "pending"
+      },
+      {
+        "id": 1,
+        "content": "完成 MineContext 和 Trae 的 demo 搭建，确保能运行最小 demo 示例",
+        "end_time": "2025-12-08 18:00:00",
+        "urgency": 2,
+        "status": "pending"
+      },
+      {
+        "id": 3,
+        "content": "打开 dev_log.md 记录当日工作计划，包括今日需完成的MineContext和Trae任务及预期结果",
+        "end_time": "2025-12-08 09:00:00",
+        "urgency": 1,
+        "status": "pending"
+      }
+    ],
+    "evidence": [
+      "从 todos 中识别出 3 个高优先级任务。",
+      "最近活动：项目规划与技术指南浏览。"
+    ],
+    "confidence": 0.85
+  },
+  "recent_activity": {
+    "title": "项目规划与技术指南浏览",
+    "summary": "用户在15分钟内浏览了多个平台的项目规划和技术文档。首先检查了MineContext项目的任务安排与运行状态，接着浏览了Google Gemini平台上的技术指南（包括Gemini CLI语法、Rainmeter使用指南等），查看了字节实习项目的实践路线图，最后在LM Arena平台上详细研究了12月8日至12月20日的每日任务规划，重点关注了技术任务安排、项目节点进度及code审查、Demo准备等具体任务要求。",
+    "time_range": {
+      "start": "2025-12-08 11:22:05",
+      "end": "2025-12-08 11:37:05"
+    },
+    "focus_areas": [
+      "项目管理与规划",
+      "技术文档与指南",
+      " MineContext项目开发",
+      "实习项目实践"
+    ],
+    "key_entities": [
+      "MineContext",
+      "Trae",
+      "MineContextTool",
+      "LM Arena",
+      "Google Gemini",
+      "字节实习"
+    ],
+    "screenshot_paths": [
+      "C:\\Users\\Administrator\\Desktop\\人机交互\\MineContext-main\\frontend\\backend\\screenshot\\activity\\2025-12-08\\11-21-33\\screen-0-0-screen-0-0.png",
+      "C:\\Users\\Administrator\\Desktop\\人机交互\\MineContext-main\\frontend\\backend\\screenshot\\activity\\2025-12-08\\11-21-48\\screen-0-0-screen-0-0.png",
+      "C:\\Users\\Administrator\\Desktop\\人机交互\\MineContext-main\\frontend\\backend\\screenshot\\activity\\2025-12-08\\11-22-18\\screen-0-0-screen-0-0.png",
+      "C:\\Users\\Administrator\\Desktop\\人机交互\\MineContext-main\\frontend\\backend\\screenshot\\activity\\2025-12-08\\11-23-48\\screen-0-0-screen-0-0.png",
+      "C:\\Users\\Administrator\\Desktop\\人机交互\\MineContext-main\\frontend\\backend\\screenshot\\activity\\2025-12-08\\11-22-03\\screen-0-0-screen-0-0.png"
+    ]
+  },
+  "tips_summary": [
+    {
+      "created_at": "2025-12-08 15:23:34.567377",
+      "summary": "\n根据对您近期活动的详细分析，以下是针对您工作状态、趋势和未来规划的建设性提醒：\n\n## 阶段工作评价\n您目前处于**高度专注的工作状态**，连续工作时间达15分钟，任务切换次数少（仅1次），表明您对当前任务保持了良好的深度专注力。从活动分布来看，学习占比12%（Gemini技术文档、Rainmeter手册等），说明您同时关注专业能力和知识体系构建。\n\n## 关键趋势洞察\n1. **技术文档整理需..."
+    },
+    {
+      "created_at": "2025-12-08 16:23:47.071443",
+      "summary": "\n# 活动数据分析与提醒\n\n## 阶段总结评价\n在最近的1小时(15:23:34 - 16:23:34)内，您的活动模式呈现以下特点：\n- **高专注度工作模式**：80%的时间投入工作，具有较强的工作投入度\n- **合理的时间管理**：保持了15分钟的连续工作时间，配合2次任务切换，显示出良好的工作节奏\n- **技术学习导向**：12%的时间用于学习，体现了持续提升专业能力的意识\n- **技术工..."
+    }
+  ]
+}

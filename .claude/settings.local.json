@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git --version)",
+      "Bash(:git checkout -b docs/update-documentation)",
+      "Bash(:git branch --show-current)"
+    ]
+  }
+}
