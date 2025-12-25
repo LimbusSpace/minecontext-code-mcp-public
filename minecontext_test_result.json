@@ -1,0 +1,64 @@
+{
+  "status": "ok",
+  "timestamp": "2025-12-25T01:43:13.654076+00:00",
+  "user_intent_summary": {
+    "natural_language": "当前最高优先级任务包括：完成 MineContext 集成测试；修复已知的 bug；编写项目文档",
+    "top_todos": [
+      {
+        "id": 101,
+        "content": "完成 MineContext 集成测试",
+        "end_time": "2025-12-25 18:00:00",
+        "urgency": 9,
+        "status": "pending"
+      },
+      {
+        "id": 103,
+        "content": "修复已知的 bug",
+        "end_time": "2025-12-24 20:00:00",
+        "urgency": 8,
+        "status": "done"
+      },
+      {
+        "id": 102,
+        "content": "编写项目文档",
+        "end_time": "2025-12-26 12:00:00",
+        "urgency": 7,
+        "status": "pending"
+      }
+    ],
+    "evidence": [
+      "从 todos 中识别出 3 个高优先级任务。",
+      "最近活动：开发 MineContext 集成。"
+    ],
+    "confidence": 0.85
+  },
+  "recent_activity": {
+    "title": "开发 MineContext 集成",
+    "summary": "完成了 MineContext 包装器的开发，包括数据获取和处理功能。",
+    "time_range": {
+      "start": "2025-12-25 09:00:00",
+      "end": "2025-12-25 12:00:00"
+    },
+    "focus_areas": [
+      "Python",
+      "API Integration"
+    ],
+    "key_entities": [
+      "MineContext",
+      "Wrapper"
+    ],
+    "screenshot_paths": [
+      "/path/to/screenshot1.png"
+    ]
+  },
+  "tips_summary": [
+    {
+      "created_at": "2025-12-24 09:30:00",
+      "summary": "使用 .json() 方法来解析 JSON 响应。"
+    },
+    {
+      "created_at": "2025-12-25 08:00:00",
+      "summary": "在连接 API 时务必添加超时设置。"
+    }
+  ]
+}

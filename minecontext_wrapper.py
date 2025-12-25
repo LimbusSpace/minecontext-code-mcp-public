@@ -140,13 +140,57 @@ def fetch_latest_context(
     limit: int = 1,
     timeout: float = 5.0,
 ) -> Dict[str, Any]:
-    """调用 MineContext /contexts 端点，返回原始 JSON 数据。"""
-    url = f"{MINECONTEXT_BASE_URL}{CONTEXTS_ENDPOINT}"
-    resp = requests.get(url, params={"limit": limit, "page": 1}, timeout=timeout)
-    resp.raise_for_status()
-    data = resp.json()
-    # /contexts 返回的就是你刚刚保存的那种结构（timestamp / data / ...）
-    return data
+    """
+    调用 MineContext API 端点获取原始数据。
+    注意：MineContext 的 /contexts 端点返回 HTML 页面，不能用于 API。
+    需要使用独立的 /api/debug/* 端点。
+    """
+
+    api_endpoints = {
+        "reports": f"/api/debug/reports",
+        "todos": f"/api/debug/todos",
+        "activities": f"/api/debug/activities",
+        "tips": f"/api/debug/tips"
+    }
+
+    raw_data = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "data": {}
+    }
+
+    for data_type, endpoint in api_endpoints.items():
+        try:
+            resp = requests.get(
+                f"{MINECONTEXT_BASE_URL}{endpoint}",
+                params={"limit": limit},
+                timeout=timeout,
+            )
+            resp.raise_for_status()
+            response_data = resp.json()
+
+            # MineContext API 返回格式: {"code": 0, "status": "ok", "data": {...}}
+            if response_data.get("code") == 0 and "data" in response_data:
+                data = response_data["data"]
+                # 提取实际的数据列表和 records
+                if data_type == "reports" and "reports" in data:
+                    raw_data["data"][data_type] = {"records": data["reports"]}
+                elif data_type == "todos" and "todos" in data:
+                    raw_data["data"][data_type] = {"records": data["todos"]}
+                elif data_type == "activities" and "activities" in data:
+                    raw_data["data"][data_type] = {"records": data["activities"]}
+                elif data_type == "tips" and "tips" in data:
+                    raw_data["data"][data_type] = {"records": data["tips"]}
+                else:
+                    # 通用处理
+                    records = data if isinstance(data, list) else [data]
+                    raw_data["data"][data_type] = {"records": records}
+
+        except Exception as e:
+            # 单个端点失败不影响其他端点，返回空 records
+            print(f"[WARN] 获取 {data_type} 失败: {e}")
+            raw_data["data"][data_type] = {"records": []}
+
+    return raw_data
 
 def _error_summary(error_type: str, message: str, hint: str) -> Dict[str, Any]:
     """统一的错误返回结构，用于优雅降级。"""
