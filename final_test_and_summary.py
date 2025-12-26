@@ -6,7 +6,7 @@
 import json
 import os
 from datetime import datetime, timezone
-from minecontext_wrapper import compress_home_context, get_minecontext_summary
+from src.mcagent.context_wrapper import compress_home_context, get_minecontext_summary
 
 def create_comprehensive_mock_data():
     """创建完整的模拟数据"""
