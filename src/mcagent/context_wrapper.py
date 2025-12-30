@@ -2,11 +2,14 @@
 import json
 import requests
 from typing import Any, Dict, List, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
+import pathlib
+import os
 
 # MineContext API 配置
 MINECONTEXT_BASE_URL = "http://127.0.0.1:1733"
 CONTEXTS_ENDPOINT = "/contexts"
+CACHE_DIR = "data"
 
 def _get_section(raw: Dict[str, Any], name: str) -> Dict[str, Any]:
     """安全地拿到 data 下面的某个子块，比如 todos / activities / tips。"""
@@ -103,6 +106,138 @@ def _build_tips_summary(raw: Dict[str, Any], max_items: int = 2) -> List[Dict[st
             }
         )
     return out
+
+def _ensure_cache_dir():
+    """确保缓存目录存在。"""
+    pathlib.Path(CACHE_DIR).mkdir(parents=True, exist_ok=True)
+
+def _get_cache_path(date: datetime) -> pathlib.Path:
+    """获取指定日期的缓存文件路径。"""
+    date_str = date.strftime("%Y%m%d")
+    return pathlib.Path(CACHE_DIR) / f"cache_activities_{date_str}.json"
+
+def _is_cache_valid(cache_path: pathlib.Path, days: int) -> bool:
+    """
+    检查缓存是否有效。
+    缓存有效条件：文件存在，且修改时间在指定天数内。
+    """
+    if not cache_path.exists():
+        return False
+
+    file_mtime = datetime.fromtimestamp(cache_path.stat().st_mtime)
+    cutoff_time = datetime.now() - timedelta(days=days)
+
+    return file_mtime >= cutoff_time
+
+def get_activities(days: int = 7, use_cache: bool = True) -> List[Dict[str, Any]]:
+    """
+    获取指定天数内的所有 activities，支持分页/limit处理。
+
+    Args:
+        days: 获取多少天内的数据（默认7天）
+        use_cache: 是否使用本地缓存（默认启用）
+
+    Returns:
+        activities 列表
+    """
+    _ensure_cache_dir()
+    cache_path = _get_cache_path(datetime.now())
+
+    # 如果启用缓存且缓存有效，直接读取缓存
+    if use_cache and _is_cache_valid(cache_path, days):
+        try:
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                cached_data = json.load(f)
+                print(f"[INFO] 使用缓存: {cache_path}")
+                return cached_data.get("activities", [])
+        except Exception as e:
+            print(f"[WARN] 读取缓存失败: {e}，将重新获取数据")
+
+    # 从 MineContext API 获取数据
+    print(f"[INFO] 从 MineContext API 获取数据...")
+    all_activities = []
+
+    try:
+        # 计算时间范围
+        end_time = datetime.now()
+        start_time = end_time - timedelta(days=days)
+
+        # 调用 API 获取 activities
+        # 注意：这里使用现有的 fetch_latest_context，但增加 limit 参数
+        # 实际可能需要根据 API 支持情况调整分页策略
+        raw_data = fetch_latest_context(
+            limit=1000,  # 设置较大的 limit 以获取足够数据
+            timeout=30.0
+        )
+
+        activities_section = _get_section(raw_data, "activities")
+        records = activities_section.get("records") or []
+
+        # 过滤在指定时间范围内的 activities
+        for activity in records:
+            if not isinstance(activity, dict):
+                continue
+
+            activity_time_str = activity.get("end_time") or activity.get("start_time")
+            if not activity_time_str:
+                continue
+
+            try:
+                # 解析时间字符串
+                activity_time = datetime.fromisoformat(activity_time_str.replace('Z', '+00:00'))
+
+                # 检查是否在指定时间范围内
+                if start_time <= activity_time <= end_time:
+                    all_activities.append(activity)
+            except Exception:
+                # 时间解析失败，跳过该 activity
+                continue
+
+        # 按时间排序（最新的在前）
+        all_activities.sort(
+            key=lambda x: x.get("end_time") or x.get("start_time") or "",
+            reverse=True
+        )
+
+        # 保存到缓存
+        if use_cache:
+            try:
+                cache_data = {
+                    "fetch_time": datetime.now().isoformat(),
+                    "days": days,
+                    "activities": all_activities
+                }
+                with open(cache_path, 'w', encoding='utf-8') as f:
+                    json.dump(cache_data, f, ensure_ascii=False, indent=2)
+                print(f"[INFO] 缓存已保存: {cache_path}")
+            except Exception as e:
+                print(f"[WARN] 保存缓存失败: {e}")
+
+    except Exception as e:
+        print(f"[ERROR] 获取 activities 失败: {e}")
+        # 如果获取失败但缓存存在，即使过期也使用缓存
+        if cache_path.exists():
+            try:
+                print(f"[INFO] 获取失败，尝试使用旧缓存: {cache_path}")
+                with open(cache_path, 'r', encoding='utf-8') as f:
+                    cached_data = json.load(f)
+                    return cached_data.get("activities", [])
+            except Exception:
+                pass
+
+    return all_activities
+
+def clear_cache():
+    """清除所有缓存文件。"""
+    try:
+        cache_dir = pathlib.Path(CACHE_DIR)
+        if cache_dir.exists():
+            for cache_file in cache_dir.glob("cache_activities_*.json"):
+                cache_file.unlink()
+                print(f"[INFO] 已删除缓存: {cache_file}")
+        print("[INFO] 缓存清理完成")
+    except Exception as e:
+        print(f"[ERROR] 清理缓存失败: {e}")
 
 def compress_home_context(raw: Dict[str, Any]) -> Dict[str, Any]:
     """把 /contexts 返回的 Home 类上下文压缩成简短摘要。"""

@@ -1,0 +1,84 @@
+{
+  "activities": [
+    {
+      "id": "act_001",
+      "title": "开发 MineContext 集成",
+      "content": "完成了 MineContext 包装器的开发，包括数据获取和处理功能。使用 requests 库连接 API，解析返回的 JSON 数据。",
+      "start_time": "2025-12-25T09:00:00",
+      "end_time": "2025-12-25T12:00:00",
+      "metadata": "{\"focus_areas\": [\"Python\", \"API Integration\"], \"key_entities\": [\"MineContext\", \"Wrapper\"]}"
+    },
+    {
+      "id": "act_002",
+      "title": "测试 MineContext 包装器",
+      "content": "编写测试用例，验证 MineContext 包装器的各项功能。测试 API 连接、数据解析和错误处理。",
+      "start_time": "2025-12-25T14:00:00",
+      "end_time": "2025-12-25T16:30:00",
+      "metadata": "{\"focus_areas\": [\"Testing\", \"Python\"], \"key_entities\": [\"MineContext\", \"Test\"]}"
+    },
+    {
+      "id": "act_003",
+      "title": "优化 MineContext 错误处理",
+      "content": "改进了错误处理机制，增加了超时设置和异常捕获。使用 try-except 处理各种网络异常。",
+      "start_time": "2025-12-26T10:00:00",
+      "end_time": "2025-12-26T11:30:00",
+      "metadata": "{\"focus_areas\": [\"Python\", \"Error Handling\"], \"key_entities\": [\"MineContext\", \"Exception\"]}"
+    },
+    {
+      "id": "act_004",
+      "title": "编写项目文档",
+      "content": "使用 Markdown 编写项目文档，包括 README 和使用指南。上传到 GitHub 仓库。",
+      "start_time": "2025-12-26T13:00:00",
+      "end_time": "2025-12-26T15:00:00",
+      "metadata": "{\"focus_areas\": [\"Documentation\", \"GitHub\"], \"key_entities\": [\"Markdown\", \"README\"]}"
+    },
+    {
+      "id": "act_005",
+      "title": "修复已知 Bug",
+      "content": "修复了 3 个已知 Bug，包括内存泄漏和性能问题。使用 Chrome DevTools 进行调试。",
+      "start_time": "2025-12-27T09:00:00",
+      "end_time": "2025-12-27T11:00:00",
+      "metadata": "{\"focus_areas\": [\"Debugging\", \"Chrome\"], \"key_entities\": [\"Bug\", \"DevTools\"]}"
+    },
+    {
+      "id": "act_006",
+      "title": "开发 MineContext 集成",
+      "content": "实现了 MineContext MCP 服务器，连接 Claude Code 工具。使用 LangChain 框架进行集成。",
+      "start_time": "2025-12-27T14:00:00",
+      "end_time": "2025-12-27T17:00:00",
+      "metadata": "{\"focus_areas\": [\"MCP\", \"LangChain\"], \"key_entities\": [\"Claude\", \"Server\"]}"
+    },
+    {
+      "id": "act_007",
+      "title": "测试 API 连接",
+      "content": "使用 Insomnia 测试 MineContext API 的各个端点。验证返回的数据格式和状态码。",
+      "start_time": "2025-12-28T10:00:00",
+      "end_time": "2025-12-28T10:30:00",
+      "metadata": "{\"focus_areas\": [\"API\", \"Testing\"], \"key_entities\": [\"Insomnia\", \"Endpoint\"]}"
+    },
+    {
+      "id": "act_008",
+      "title": "优化 MineContext 错误处理",
+      "content": "添加了重试机制，当 API 请求失败时自动重试 3 次。使用 exponential backoff 策略。",
+      "start_time": "2025-12-28T11:00:00",
+      "end_time": "2025-12-28T12:00:00",
+      "metadata": "{\"focus_areas\": [\"Retry\", \"Python\"], \"key_entities\": [\"Backoff\", \"Exception\"]}"
+    },
+    {
+      "id": "act_009",
+      "title": "编写单元测试",
+      "content": "为 MineContext 包装器编写单元测试，使用 pytest 框架。覆盖率达到 80% 以上。",
+      "start_time": "2025-12-28T14:00:00",
+      "end_time": "2025-12-28T16:00:00",
+      "metadata": "{\"focus_areas\": [\"Testing\", \"pytest\"], \"key_entities\": [\"Unit Test\", \"Coverage\"]}"
+    },
+    {
+      "id": "act_010",
+      "title": "开发 MineContext 集成",
+      "content": "完成了行为挖掘功能，从 activities 数据中自动识别行为模式。实现了聚类算法。",
+      "start_time": "2025-12-29T09:00:00",
+      "end_time": "2025-12-29T12:00:00",
+      "metadata": "{\"focus_areas\": [\"Data Mining\", \"Clustering\"], \"key_entities\": [\"Behavior\", \"Algorithm\"]}"
+    }
+  ]
+}
