@@ -2,8 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(git --version)",
-      "Bash(:git checkout -b docs/update-documentation)",
-      "Bash(:git branch --show-current)"
+      "Bash(git checkout -b:*)",
+      "Bash(git branch --show-current)",
+      "Bash(: .)",
+      "Bash(: python tests/test_evidence_pack.py)"
     ]
   }
 }
