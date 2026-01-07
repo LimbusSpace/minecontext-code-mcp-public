@@ -28,9 +28,9 @@ minecontext_integration/
 │   ├── test_success_report.py
 │   └── test_wrapper_service.py
 ├── data/                      # 缓存目录（自动生成）
-├── docs/                      # 文档
 ├── examples/                  # 示例文件
-├── samples/                   # 数据样本
+│   └── demo_mine_behaviors.py    # 行为挖掘演示脚本
+└── samples/                   # 数据样本
 │   └── sample_activities.json    # 示例活动数据
 └── README.md
 ```
@@ -115,7 +115,7 @@ for cluster in clusters:
 
 ```bash
 # 离线演示（使用示例数据，无需 MineContext 服务）
-python demo_mine_behaviors.py
+python examples/demo_mine_behaviors.py
 ```
 
 #### 3. 运行测试

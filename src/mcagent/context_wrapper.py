@@ -133,6 +133,11 @@ def get_activities(days: int = 7, use_cache: bool = True) -> List[Dict[str, Any]
     """
     获取指定天数内的所有 activities，支持分页/limit处理。
 
+    策略：
+    1. 如果启用缓存且缓存有效，优先使用缓存
+    2. 否则尝试从 MineContext API 获取
+    3. 如果 MineContext 不可用，fallback 到 samples/sample_activities.json
+
     Args:
         days: 获取多少天内的数据（默认7天）
         use_cache: 是否使用本地缓存（默认启用）
@@ -156,6 +161,7 @@ def get_activities(days: int = 7, use_cache: bool = True) -> List[Dict[str, Any]
     # 从 MineContext API 获取数据
     print(f"[INFO] 从 MineContext API 获取数据...")
     all_activities = []
+    minecontext_available = False
 
     try:
         # 计算时间范围
@@ -199,13 +205,17 @@ def get_activities(days: int = 7, use_cache: bool = True) -> List[Dict[str, Any]
             reverse=True
         )
 
+        # 标记 MineContext 可用
+        minecontext_available = len(all_activities) > 0
+
         # 保存到缓存
-        if use_cache:
+        if use_cache and minecontext_available:
             try:
                 cache_data = {
                     "fetch_time": datetime.now().isoformat(),
                     "days": days,
-                    "activities": all_activities
+                    "activities": all_activities,
+                    "source": "minecontext"
                 }
                 with open(cache_path, 'w', encoding='utf-8') as f:
                     json.dump(cache_data, f, ensure_ascii=False, indent=2)
@@ -214,16 +224,56 @@ def get_activities(days: int = 7, use_cache: bool = True) -> List[Dict[str, Any]
                 print(f"[WARN] 保存缓存失败: {e}")
 
     except Exception as e:
-        print(f"[ERROR] 获取 activities 失败: {e}")
-        # 如果获取失败但缓存存在，即使过期也使用缓存
+        print(f"[WARN] 从 MineContext API 获取数据失败: {e}")
+        print(f"[INFO] 将尝试 fallback 到 samples 数据...")
+        minecontext_available = False
+
+    # **Fallback 策略**：如果 MineContext 不可用或返回空数据，使用 samples
+    if not minecontext_available or len(all_activities) == 0:
+        print(f"[INFO] MineContext 不可用或返回空数据，尝试加载 samples...")
+
+        # 首先尝试使用过期缓存（如果有的话）
         if cache_path.exists():
             try:
-                print(f"[INFO] 获取失败，尝试使用旧缓存: {cache_path}")
+                print(f"[INFO] 尝试使用缓存: {cache_path}")
                 with open(cache_path, 'r', encoding='utf-8') as f:
                     cached_data = json.load(f)
-                    return cached_data.get("activities", [])
-            except Exception:
-                pass
+                    cached_activities = cached_data.get("activities", [])
+                    if cached_activities:
+                        print(f"[INFO] 从缓存中加载 {len(cached_activities)} 条 activities")
+                        return cached_activities
+            except Exception as e:
+                print(f"[WARN] 读取缓存失败: {e}")
+
+        # 如果缓存也不可用，使用 samples 数据
+        samples_path = pathlib.Path("samples/sample_activities.json")
+        if samples_path.exists():
+            try:
+                print(f"[INFO] 从 samples 加载数据: {samples_path}")
+                with open(samples_path, 'r', encoding='utf-8') as f:
+                    samples_data = json.load(f)
+                    all_activities = samples_data.get("activities", [])
+                    print(f"[INFO] 从 samples 中加载 {len(all_activities)} 条 activities")
+
+                    # 保存到缓存（标记为 samples 来源）
+                    if use_cache and all_activities:
+                        try:
+                            cache_data = {
+                                "fetch_time": datetime.now().isoformat(),
+                                "days": days,
+                                "activities": all_activities,
+                                "source": "samples"
+                            }
+                            with open(cache_path, 'w', encoding='utf-8') as f:
+                                json.dump(cache_data, f, ensure_ascii=False, indent=2)
+                            print(f"[INFO] samples 数据已缓存: {cache_path}")
+                        except Exception as e:
+                            print(f"[WARN] 保存 samples 缓存失败: {e}")
+
+            except Exception as e:
+                print(f"[WARN] 从 samples 加载数据失败: {e}")
+        else:
+            print(f"[WARN] samples 文件不存在: {samples_path}")
 
     return all_activities
 
